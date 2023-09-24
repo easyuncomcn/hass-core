@@ -1,0 +1,14 @@
+ARG BUILD_FROM=fcr.freeb.vip/freeb/hass-core-base:latest
+FROM ${BUILD_FROM}
+
+## Setup Home Assistant Core
+COPY . homeassistant/
+RUN \
+    pip3 install \
+        --no-cache-dir \
+        --no-index \
+        --only-binary=:all: \
+        --find-links "${WHEELS_LINKS}" \
+        -e ./homeassistant \
+    && python3 -m compileall \
+        homeassistant/homeassistant
